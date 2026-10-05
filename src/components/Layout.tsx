@@ -1,0 +1,129 @@
+import { useEffect, useState } from 'react'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Menu, MessageCircle, X } from 'lucide-react'
+import logo from '@/assets/logotipo-rafaela-saes-03c8d.jpeg'
+
+const links = [
+  ['O que pode ser analisado', 'analise'],
+  ['Como funciona', 'como-funciona'],
+  ['Sobre a Dra. Rafaela', 'sobre'],
+  ['Dúvidas frequentes', 'faq'],
+]
+
+export default function Layout() {
+  const [scrolled, setScrolled] = useState(false)
+  const [menu, setMenu] = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80)
+    onScroll()
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    setMenu(false)
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
+  const go = (id: string) => {
+    setMenu(false)
+    if (location.pathname !== '/') navigate(`/#${id}`)
+    else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  return (
+    <div className="min-h-screen bg-cream text-ink">
+      <header
+        className={`site-header ${scrolled || location.pathname !== '/' ? 'header-solid' : ''}`}
+      >
+        <div className="container-wide flex h-20 items-center justify-between">
+          <Link to="/" className="brand" aria-label="Saes Advocacia - início">
+            <img src={logo} alt="Monograma SR" />
+            <span>SAES ADVOCACIA</span>
+          </Link>
+          <nav className="hidden items-center gap-6 lg:flex" aria-label="Navegação principal">
+            {links.map(([label, id]) => (
+              <button key={id} onClick={() => go(id)} className="nav-link">
+                {label}
+              </button>
+            ))}
+            <button onClick={() => go('formulario')} className="btn-outline py-3">
+              Enviar contrato para análise
+            </button>
+          </nav>
+          <button onClick={() => setMenu(true)} className="p-2 lg:hidden" aria-label="Abrir menu">
+            <Menu />
+          </button>
+        </div>
+      </header>
+
+      {menu && (
+        <div className="mobile-menu">
+          <button
+            onClick={() => setMenu(false)}
+            className="absolute right-6 top-6 p-3 text-cream"
+            aria-label="Fechar menu"
+          >
+            <X size={30} />
+          </button>
+          <img src={logo} alt="Saes Advocacia" className="mb-10 h-24 w-24 object-contain" />
+          {links.map(([label, id], i) => (
+            <button
+              key={id}
+              onClick={() => go(id)}
+              style={{ animationDelay: `${i * 70}ms` }}
+              className="animate-fade-in-up font-display text-3xl text-cream"
+            >
+              {label}
+            </button>
+          ))}
+          <button onClick={() => go('formulario')} className="btn-primary mt-5">
+            Enviar contrato para análise
+          </button>
+        </div>
+      )}
+
+      <main>
+        <Outlet />
+      </main>
+
+      <footer className="bg-black pb-28 pt-16 text-cream sm:pb-10">
+        <div className="container-wide grid gap-10 md:grid-cols-[1fr_1.6fr]">
+          <div>
+            <img src={logo} alt="Saes Advocacia" className="h-28 w-28 rounded object-contain" />
+            <p className="wordmark mt-4">SAES ADVOCACIA</p>
+          </div>
+          <div className="space-y-4 text-sm text-darkmuted">
+            <p className="text-base text-cream">
+              Rafaela Saes — Advogada. OAB/SP [preencher com o número da OAB]
+            </p>
+            <p>Responsável pelo tratamento dos dados: Rafaela Saes — Saes Advocacia.</p>
+            <Link to="/privacidade" className="inline-block text-gold underline underline-offset-4">
+              Política de Privacidade
+            </Link>
+            <p>
+              A análise é individual e não há garantia de resultado. Honorários e etapas são
+              explicados antes da contratação.
+            </p>
+            <p>
+              Atendimento exclusivo para multipropriedade, cotas imobiliárias, unidades hoteleiras e
+              produtos de férias compartilhadas. Não atendemos conflitos de locação.
+            </p>
+            <div className="border-t border-white/10 pt-5">
+              © 2025 Saes Advocacia — Todos os direitos reservados
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {scrolled && location.pathname === '/' && (
+        <button onClick={() => go('formulario')} className="mobile-bar sm:hidden">
+          <MessageCircle size={20} /> Enviar contrato para análise
+        </button>
+      )}
+    </div>
+  )
+}
