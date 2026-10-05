@@ -11,7 +11,7 @@ export default function ThankYou() {
         <CheckCircle2 className="mx-auto mb-6 text-success" size={54} />
         <p className="eyebrow">INFORMAÇÕES RECEBIDAS</p>
         <h1 className="section-title">Obrigada pelo seu contato.</h1>
-        <p className="mt-6 text-lg text-muted">
+        <p className="mt-6 text-lg text-[#3b362d]">
           Recebemos suas informações. Continue no WhatsApp para falar com o escritório.
         </p>
         <a
@@ -22,7 +22,7 @@ export default function ThankYou() {
         >
           <MessageCircle size={19} /> Continuar no WhatsApp
         </a>
-        <p className="mt-8 border-t border-line pt-7 text-sm text-muted">
+        <p className="mt-8 border-t border-line pt-7 text-sm text-[#3b362d]">
           A análise é individual e depende do contrato e dos documentos apresentados. Não há
           garantia de resultado.
         </p>

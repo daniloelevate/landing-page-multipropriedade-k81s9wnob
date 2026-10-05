@@ -282,7 +282,7 @@ function TriageForm() {
   return (
     <div className="form-shell">
       <div className="mb-9">
-        <div className="flex justify-between text-xs font-semibold uppercase tracking-wider text-muted">
+        <div className="flex justify-between text-xs font-semibold uppercase tracking-wider text-[#3b362d]">
           <span>Passo {step} de 3</span>
           <span>
             {step === 1
@@ -454,7 +454,7 @@ export default function Index() {
             <button onClick={scrollForm} className="btn-primary mt-7">
               Enviar contrato para análise inicial
             </button>
-            <p className="mt-5 max-w-xl text-sm leading-relaxed text-muted">
+            <p className="mt-5 max-w-xl text-sm leading-relaxed text-[#3b362d]">
               Atendimento direcionado a contratos de multipropriedade, cotas imobiliárias e produtos
               de férias compartilhadas. Não atuamos com distrato de locação ou rescisão de contrato
               de aluguel.
@@ -501,7 +501,7 @@ export default function Index() {
               </article>
             ))}
           </div>
-          <p className="mt-8 border-l-2 border-gold pl-5 text-muted">
+          <p className="mt-8 border-l-2 border-gold pl-5 text-[#3b362d]">
             Todas as possibilidades dependem da análise do contrato e dos documentos do seu caso.
           </p>
         </div>
@@ -511,7 +511,7 @@ export default function Index() {
         <div className="container-wide">
           <p className="eyebrow">ATUAÇÃO ESTRUTURADA</p>
           <h2 className="section-title">Análise e negociação de distrato</h2>
-          <p className="mt-6 max-w-3xl text-lg text-muted">
+          <p className="mt-6 max-w-3xl text-lg text-[#3b362d]">
             A atuação extrajudicial é uma etapa real e estruturada, definida após o estudo das
             circunstâncias e da documentação de cada contratação.
           </p>
@@ -580,7 +580,7 @@ export default function Index() {
           <div className="mx-auto max-w-4xl text-center">
             <p className="eyebrow">TRIAGEM INICIAL</p>
             <h2 className="section-title">Envie as informações do seu caso</h2>
-            <p className="mt-5 text-lg text-muted">
+            <p className="mt-5 text-lg text-[#3b362d]">
               Responda algumas perguntas rápidas. Ao final, sua análise será enviada para o
               escritório.
             </p>
@@ -607,7 +607,7 @@ export default function Index() {
                 <AccordionTrigger className="py-6 text-left font-display text-xl hover:no-underline">
                   {q}
                 </AccordionTrigger>
-                <AccordionContent className="pb-6 text-base leading-relaxed text-muted [&>div]:text-muted">
+                <AccordionContent className="pb-6 text-base leading-relaxed text-[#3b362d] [&>div]:text-[#3b362d]">
                   {a}
                 </AccordionContent>
               </AccordionItem>

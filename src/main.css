@@ -16,7 +16,7 @@
     --secondary: 39 37% 89%;
     --secondary-foreground: 43 19% 11%;
     --muted: 39 37% 89%;
-    --muted-foreground: 40 10% 39%;
+    --muted-foreground: 40 13% 20%;
     --accent: 40 43% 48%;
     --accent-foreground: 48 31% 5%;
     --destructive: 9 54% 41%;
@@ -78,7 +78,7 @@
     color: #3b362d;
   }
   .text-darkmuted {
-    color: #b5ac97;
+    color: #d6cebf;
   }
   .text-gold {
     color: #b08d45;
@@ -152,13 +152,17 @@
     @apply mt-4 max-w-3xl font-display text-[42px] font-semibold leading-[1.03] md:text-[60px];
   }
   .hero-subtitle {
-    @apply mt-6 max-w-2xl text-lg leading-relaxed text-muted;
+    @apply mt-6 max-w-2xl text-lg leading-relaxed text-[#3b362d];
+    color: #3b362d;
   }
   .eyebrow {
     color: #9b7935;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.17em;
+  }
+  .hero-copy {
+    color: #3b362d;
   }
   .hero-photo-wrap {
     @apply relative mx-auto w-[88%] max-w-[430px];
@@ -193,7 +197,8 @@
     @apply grid gap-x-14 gap-y-4 md:grid-cols-2;
   }
   .check-item {
-    @apply flex items-start gap-4 border-b border-line py-5 text-muted;
+    @apply flex items-start gap-4 border-b border-line py-5 text-[#3b362d];
+    color: #3b362d;
     animation: fadeUp 0.6s ease-out both;
   }
   .check-item span {
@@ -216,7 +221,8 @@
     @apply mt-5 text-2xl font-semibold;
   }
   .service-card p {
-    @apply mt-2 text-base leading-relaxed text-muted;
+    @apply mt-2 text-base leading-relaxed text-[#3b362d];
+    color: #3b362d;
   }
   .timeline {
     @apply relative ml-5 mt-8 space-y-0;
@@ -235,7 +241,8 @@
     border: 1px solid #b08d45;
   }
   .timeline li p {
-    @apply pt-1 text-lg text-muted;
+    @apply pt-1 text-lg text-[#3b362d];
+    color: #3b362d;
   }
   .benefits {
     @apply h-fit rounded-xl bg-[#1E1C16] p-8 text-cream lg:sticky lg:top-28;
@@ -292,11 +299,13 @@
   }
   .field > span,
   .question-label {
-    @apply text-[13px] font-semibold uppercase leading-snug tracking-[.06em] text-muted;
+    @apply text-[13px] font-semibold uppercase leading-snug tracking-[.06em] text-[#3b362d];
+    color: #3b362d;
   }
   .field input,
   .field select {
-    @apply h-12 w-full rounded-md border bg-[#FCFAF6] px-4 text-base text-muted outline-none transition;
+    @apply h-12 w-full rounded-md border bg-[#FCFAF6] px-4 text-base text-[#3b362d] outline-none transition;
+    color: #3b362d;
     border-color: #dccfb8;
   }
   .field input:focus,
@@ -313,7 +322,8 @@
     @apply flex flex-wrap gap-2;
   }
   .choice-row label {
-    @apply cursor-pointer rounded-md border px-4 py-2 text-sm text-muted transition;
+    @apply cursor-pointer rounded-md border px-4 py-2 text-sm text-[#3b362d] transition;
+    color: #3b362d;
     border-color: #dccfb8;
   }
   .choice-row label.selected {
@@ -324,7 +334,8 @@
     @apply sr-only;
   }
   .consent {
-    @apply grid cursor-pointer grid-cols-[auto_1fr] gap-x-3 text-sm text-muted;
+    @apply grid cursor-pointer grid-cols-[auto_1fr] gap-x-3 text-sm text-[#3b362d];
+    color: #3b362d;
   }
   .consent input {
     @apply mt-1 h-4 w-4 accent-[#B08D45];
@@ -345,7 +356,8 @@
     @apply mt-3 inline-flex items-center gap-2 font-semibold underline;
   }
   .segment-strip {
-    @apply border-y py-6 text-center text-sm leading-relaxed text-muted;
+    @apply border-y py-6 text-center text-sm leading-relaxed text-[#3b362d];
+    color: #3b362d;
     border-color: #dccfb8;
     background: #f2ebde;
   }
@@ -356,7 +368,8 @@
     @apply fixed inset-x-3 bottom-3 z-40 flex h-14 items-center justify-center gap-2 rounded-md bg-[#B08D45] px-4 text-sm font-semibold uppercase tracking-wide text-[#111008] shadow-2xl;
   }
   .prose-law {
-    @apply space-y-6 leading-relaxed text-muted;
+    @apply space-y-6 leading-relaxed text-[#3b362d];
+    color: #3b362d;
   }
   .prose-law h2 {
     @apply pt-4 text-2xl font-semibold text-ink;

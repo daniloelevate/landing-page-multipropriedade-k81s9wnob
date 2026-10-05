@@ -45,7 +45,7 @@ export default function Privacy() {
             Rafaela Saes — Saes Advocacia. Solicitações relacionadas à privacidade podem ser
             encaminhadas pelo canal de contato do escritório.
           </p>
-          <p className="border-l-2 border-gold pl-5 text-muted">
+          <p className="border-l-2 border-gold pl-5 text-[#3b362d]">
             O envio do formulário não formaliza contratação de serviços jurídicos. Honorários e
             etapas são explicados antes da contratação.
           </p>
