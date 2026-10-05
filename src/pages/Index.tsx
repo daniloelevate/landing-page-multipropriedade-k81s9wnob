@@ -607,7 +607,7 @@ export default function Index() {
                 <AccordionTrigger className="py-6 text-left font-display text-xl hover:no-underline">
                   {q}
                 </AccordionTrigger>
-                <AccordionContent className="pb-6 text-base leading-relaxed text-muted">
+                <AccordionContent className="pb-6 text-base leading-relaxed text-muted [&>div]:text-muted">
                   {a}
                 </AccordionContent>
               </AccordionItem>

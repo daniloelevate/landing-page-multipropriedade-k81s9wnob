@@ -35,7 +35,7 @@
   body {
     margin: 0;
     background: #f8f4ec;
-    color: #211e17;
+    color: #3b362d;
     font-family: 'Jost', sans-serif;
     font-size: 17px;
     line-height: 1.7;
@@ -72,7 +72,7 @@
     background: #111008;
   }
   .text-ink {
-    color: #211e17;
+    color: #3b362d;
   }
   .text-muted {
     color: #3b362d;
@@ -193,7 +193,7 @@
     @apply grid gap-x-14 gap-y-4 md:grid-cols-2;
   }
   .check-item {
-    @apply flex items-start gap-4 border-b border-line py-5;
+    @apply flex items-start gap-4 border-b border-line py-5 text-muted;
     animation: fadeUp 0.6s ease-out both;
   }
   .check-item span {
@@ -235,7 +235,7 @@
     border: 1px solid #b08d45;
   }
   .timeline li p {
-    @apply pt-1 text-lg;
+    @apply pt-1 text-lg text-muted;
   }
   .benefits {
     @apply h-fit rounded-xl bg-[#1E1C16] p-8 text-cream lg:sticky lg:top-28;
@@ -292,11 +292,11 @@
   }
   .field > span,
   .question-label {
-    @apply text-[13px] font-semibold uppercase leading-snug tracking-[.06em] text-[#514B3F];
+    @apply text-[13px] font-semibold uppercase leading-snug tracking-[.06em] text-muted;
   }
   .field input,
   .field select {
-    @apply h-12 w-full rounded-md border bg-[#FCFAF6] px-4 text-base outline-none transition;
+    @apply h-12 w-full rounded-md border bg-[#FCFAF6] px-4 text-base text-muted outline-none transition;
     border-color: #dccfb8;
   }
   .field input:focus,
@@ -313,7 +313,7 @@
     @apply flex flex-wrap gap-2;
   }
   .choice-row label {
-    @apply cursor-pointer rounded-md border px-4 py-2 text-sm transition;
+    @apply cursor-pointer rounded-md border px-4 py-2 text-sm text-muted transition;
     border-color: #dccfb8;
   }
   .choice-row label.selected {
