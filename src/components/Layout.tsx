@@ -113,7 +113,7 @@ export default function Layout() {
               produtos de férias compartilhadas. Não atendemos conflitos de locação.
             </p>
             <div className="border-t border-white/10 pt-5">
-              © 2025 Saes Advocacia — Todos os direitos reservados
+              © 2026 Saes Advocacia — Todos os direitos reservados
             </div>
           </div>
         </div>

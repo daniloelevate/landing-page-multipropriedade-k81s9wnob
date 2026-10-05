@@ -75,7 +75,7 @@
     color: #211e17;
   }
   .text-muted {
-    color: #6e6759;
+    color: #3b362d;
   }
   .text-darkmuted {
     color: #b5ac97;
@@ -153,9 +153,6 @@
   }
   .hero-subtitle {
     @apply mt-6 max-w-2xl text-lg leading-relaxed text-muted;
-  }
-  .hero-logo {
-    @apply mb-5 hidden h-24 w-24 rounded object-contain lg:block;
   }
   .eyebrow {
     color: #9b7935;

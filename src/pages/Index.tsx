@@ -19,7 +19,6 @@ import {
 } from 'lucide-react'
 import heroPhoto from '@/assets/foto-rafaela-saes-1-d440f.jpeg'
 import aboutPhoto from '@/assets/foto-rafaela-saes-2-9c8cf.jpeg'
-import logo from '@/assets/logotipo-rafaela-saes-03c8d.jpeg'
 import { criarLead, LeadData } from '@/services/leads'
 
 type FormData = Omit<LeadData, 'ano_contratacao'> & { ano_contratacao: string }
@@ -446,7 +445,6 @@ export default function Index() {
       <section className="hero">
         <div className="container-wide hero-grid">
           <div className="hero-copy animate-fade-in-up">
-            <img src={logo} alt="Saes Advocacia" className="hero-logo" />
             <p className="eyebrow">CANCELAMENTO DE CONTRATOS DE MULTIPROPRIEDADE</p>
             <h1>Quer cancelar seu contrato de multipropriedade?</h1>
             <p className="hero-subtitle">
