@@ -16,23 +16,26 @@ export default function Privacy() {
         <div className="prose-law mt-10">
           <p>
             Esta Política de Privacidade explica como a Saes Advocacia coleta, utiliza e protege os
-            dados enviados por meio do formulário desta página.
+            dados compartilhados por meio de mensagens via WhatsApp e canais de atendimento desta
+            página.
           </p>
           <h2>Dados coletados</h2>
           <p>
-            Podemos coletar nome, e-mail, telefone/WhatsApp e informações relacionadas ao contrato,
-            empreendimento, pagamentos, situação atual e documentos disponíveis.
+            Podemos receber nome, telefone/WhatsApp e informações voluntariamente encaminhadas em
+            mensagem ou anexos, como cópia do contrato, identificação do empreendimento,
+            comprovantes de pagamento, situação atual do caso e eventuais propostas de distrato.
           </p>
           <h2>Finalidade do tratamento</h2>
           <p>
-            Os dados são utilizados para realizar a triagem inicial, analisar as informações do
-            caso, entrar em contato com o titular e organizar o atendimento jurídico solicitado.
+            Os dados são utilizados exclusivamente para realizar a análise inicial do caso,
+            responder às mensagens do titular, prestar orientações preliminares e viabilizar o
+            atendimento jurídico solicitado.
           </p>
           <h2>Compartilhamento e segurança</h2>
           <p>
             As informações são acessadas apenas para as finalidades do atendimento e não são
-            comercializadas. São adotadas medidas razoáveis para prevenir acessos não autorizados,
-            perda ou uso inadequado.
+            comercializadas. São adotadas medidas técnicas e organizacionais razoáveis para proteger
+            seus dados, resguardados pelo sigilo profissional inerente à advocacia.
           </p>
           <h2>Direitos previstos na LGPD</h2>
           <p>
@@ -42,12 +45,14 @@ export default function Privacy() {
           </p>
           <h2>Responsável pelo tratamento</h2>
           <p>
-            Rafaela Saes — Saes Advocacia. Solicitações relacionadas à privacidade podem ser
-            encaminhadas pelo canal de contato do escritório.
+            Rafaela Saes — Saes Advocacia. Solicitações relacionadas à privacidade e proteção de
+            dados podem ser encaminhadas diretamente pelo WhatsApp ou pelos canais de contato do
+            escritório.
           </p>
           <p className="border-l-2 border-gold pl-5 text-[#3b362d]">
-            O envio do formulário não formaliza contratação de serviços jurídicos. Honorários e
-            etapas são explicados antes da contratação.
+            O envio de mensagem pelo WhatsApp não formaliza, por si só, a contratação de serviços
+            jurídicos. Honorários, etapas e termos de atuação são explicados de forma transparente
+            antes de qualquer contratação.
           </p>
         </div>
       </div>

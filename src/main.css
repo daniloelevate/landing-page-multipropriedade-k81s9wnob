@@ -279,81 +279,49 @@
   .authority-list li {
     @apply border-l border-[#B08D45] pl-4;
   }
-  .form-shell {
-    @apply mx-auto mt-12 max-w-4xl rounded-xl border border-[#E3D9C4] bg-white p-6 shadow-[0_20px_60px_rgba(17,16,8,.08)] md:p-10;
+  .whatsapp-cta-box {
+    @apply mx-auto mt-12 max-w-4xl rounded-2xl border border-[#E3D9C4] bg-[#FCFAF6] p-7 shadow-[0_20px_60px_rgba(17,16,8,.06)] md:p-12;
+    border-top: 3px solid #b08d45;
   }
-  .progress {
-    @apply mt-3 h-1 overflow-hidden rounded bg-[#EDE6D8];
+  .whatsapp-cta-content {
+    @apply flex flex-col items-center text-center;
   }
-  .progress i {
-    @apply block h-full bg-[#B08D45] transition-all duration-500;
+  .whatsapp-badge {
+    @apply inline-flex items-center gap-2 rounded-full border border-[#DCCFB8] bg-[#F4ECD9] px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#8D6D2D];
   }
-  .form-grid {
-    @apply grid gap-6 md:grid-cols-2;
+  .whatsapp-cta-title {
+    @apply mt-6 font-display text-2xl font-semibold text-[#111008] md:text-3xl;
   }
-  .step-slide {
-    animation: stepSlide 0.4s ease-out;
+  .whatsapp-cta-description {
+    @apply mt-4 max-w-2xl text-base leading-relaxed text-[#3b362d];
   }
-  .field {
-    @apply flex flex-col gap-2;
+  .whatsapp-features {
+    @apply my-8 grid w-full gap-5 text-left md:grid-cols-3;
   }
-  .field > span,
-  .question-label {
-    @apply text-[13px] font-semibold uppercase leading-snug tracking-[.06em] text-[#3b362d];
-    color: #3b362d;
+  .whatsapp-feature-item {
+    @apply flex items-start gap-3.5 rounded-xl border border-[#E8DEC9] bg-[#F8F4EC] p-5;
   }
-  .field input,
-  .field select {
-    @apply h-12 w-full rounded-md border bg-[#FCFAF6] px-4 text-base text-[#3b362d] outline-none transition;
-    color: #3b362d;
-    border-color: #dccfb8;
+  .whatsapp-feature-item strong {
+    @apply block text-[15px] font-semibold text-[#111008];
   }
-  .field input:focus,
-  .field select:focus {
+  .whatsapp-feature-item p {
+    @apply mt-1 text-sm leading-relaxed text-[#3b362d];
+  }
+  .feature-icon-wrap {
+    @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#EAE2D0] text-[#B08D45];
+  }
+  .whatsapp-action-area {
+    @apply flex w-full flex-col items-center gap-3 border-t border-[#E8DEC9] pt-8;
+  }
+  .whatsapp-main-button {
+    @apply text-sm md:text-base md:px-8 md:py-4 h-auto min-h-14 font-semibold shadow-lg hover:shadow-xl;
+  }
+  .whatsapp-disclaimer {
+    @apply max-w-xl text-xs leading-relaxed text-[#3b362d] italic;
+  }
+  .whatsapp-notice {
+    @apply mt-8 border-l-2 pl-5 text-left text-xs leading-relaxed text-[#3b362d];
     border-color: #b08d45;
-    box-shadow: 0 0 0 3px rgba(176, 141, 69, 0.12);
-  }
-  .field small,
-  .consent small {
-    color: #a3402f;
-    font-size: 13px;
-  }
-  .choice-row {
-    @apply flex flex-wrap gap-2;
-  }
-  .choice-row label {
-    @apply cursor-pointer rounded-md border px-4 py-2 text-sm text-[#3b362d] transition;
-    color: #3b362d;
-    border-color: #dccfb8;
-  }
-  .choice-row label.selected {
-    border-color: #b08d45;
-    background: #f4ecd9;
-  }
-  .choice-row input {
-    @apply sr-only;
-  }
-  .consent {
-    @apply grid cursor-pointer grid-cols-[auto_1fr] gap-x-3 text-sm text-[#3b362d];
-    color: #3b362d;
-  }
-  .consent input {
-    @apply mt-1 h-4 w-4 accent-[#B08D45];
-  }
-  .consent a {
-    @apply text-gold underline;
-  }
-  .consent small {
-    @apply col-start-2;
-  }
-  .error-box {
-    @apply mt-6 rounded-lg border p-4 text-sm;
-    color: #a3402f;
-    border-color: #d8a89f;
-    background: #fff6f4;
-  }
-  .error-box a {
-    @apply mt-3 inline-flex items-center gap-2 font-semibold underline;
   }
   .segment-strip {
     @apply border-y py-6 text-center text-sm leading-relaxed text-[#3b362d];

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, MessageCircle, X } from 'lucide-react'
 import logo from '@/assets/logotipo-rafaela-saes-03c8d.jpeg'
+import { WHATSAPP_LINK } from '@/constants/contact'
 
 const links = [
   ['O que pode ser analisado', 'analise'],
@@ -50,9 +51,14 @@ export default function Layout() {
                 {label}
               </button>
             ))}
-            <button onClick={() => go('formulario')} className="btn-outline py-3">
+            <a
+              href={WHATSAPP_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-outline py-3"
+            >
               Enviar contrato para análise
-            </button>
+            </a>
           </nav>
           <button onClick={() => setMenu(true)} className="p-2 lg:hidden" aria-label="Abrir menu">
             <Menu />
@@ -80,9 +86,15 @@ export default function Layout() {
               {label}
             </button>
           ))}
-          <button onClick={() => go('formulario')} className="btn-primary mt-5">
-            Enviar contrato para análise
-          </button>
+          <a
+            href={WHATSAPP_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setMenu(false)}
+            className="btn-primary mt-5 inline-flex"
+          >
+            <MessageCircle size={18} /> Enviar contrato para análise
+          </a>
         </div>
       )}
 
@@ -120,9 +132,14 @@ export default function Layout() {
       </footer>
 
       {scrolled && location.pathname === '/' && (
-        <button onClick={() => go('formulario')} className="mobile-bar sm:hidden">
+        <a
+          href={WHATSAPP_LINK}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mobile-bar sm:hidden"
+        >
           <MessageCircle size={20} /> Enviar contrato para análise
-        </button>
+        </a>
       )}
     </div>
   )
