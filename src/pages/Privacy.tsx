@@ -16,20 +16,32 @@ export default function Privacy() {
         <div className="prose-law mt-10">
           <p>
             Esta Política de Privacidade explica como a Saes Advocacia coleta, utiliza e protege os
-            dados compartilhados por meio de mensagens via WhatsApp e canais de atendimento desta
-            página.
+            dados compartilhados por meio de mensagens via WhatsApp e canais de atendimento das
+            nossas páginas de serviços jurídicos (cancelamento de multipropriedade e usucapião /
+            regularização imobiliária).
           </p>
           <h2>Dados coletados</h2>
           <p>
             Podemos receber nome, telefone/WhatsApp e informações voluntariamente encaminhadas em
-            mensagem ou anexos, como cópia do contrato, identificação do empreendimento,
-            comprovantes de pagamento, situação atual do caso e eventuais propostas de distrato.
+            mensagem ou anexos, conforme o serviço solicitado:
           </p>
+          <ul className="list-disc space-y-2 pl-6">
+            <li>
+              <strong>Para multipropriedade e cotas imobiliárias:</strong> cópia do contrato,
+              identificação do empreendimento, comprovantes de pagamento, comunicações com a empresa
+              e eventuais propostas de distrato.
+            </li>
+            <li>
+              <strong>Para usucapião e regularização imobiliária:</strong> contratos particulares,
+              escrituras, certidões do registro de imóveis, carnês/IPTU, contas de consumo antigas,
+              relato do tempo e da forma de posse, fotos e documentos de qualificação dos ocupantes.
+            </li>
+          </ul>
           <h2>Finalidade do tratamento</h2>
           <p>
             Os dados são utilizados exclusivamente para realizar a análise inicial do caso,
             responder às mensagens do titular, prestar orientações preliminares e viabilizar o
-            atendimento jurídico solicitado.
+            atendimento jurídico solicitado em cada área de atuação.
           </p>
           <h2>Compartilhamento e segurança</h2>
           <p>

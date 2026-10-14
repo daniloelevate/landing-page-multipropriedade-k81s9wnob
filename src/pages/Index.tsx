@@ -241,7 +241,7 @@ export default function Index() {
               adequada para cada situação.
             </p>
             <ul className="authority-list">
-              <li>Rafaela Saes — Advogada. OAB/SP [preencher com o número da OAB]</li>
+              <li>Rafaela Saes — Advogada. OAB/SP 485.223</li>
               <li>Atendimento online em todo o Brasil.</li>
               <li>Cada contrato e conjunto de documentos recebe análise individual.</li>
               <li>A atuação jurídica não envolve garantia de resultado.</li>

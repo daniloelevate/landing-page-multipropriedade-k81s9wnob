@@ -2,10 +2,18 @@ import { useEffect, useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, MessageCircle, X } from 'lucide-react'
 import logo from '@/assets/logotipo-rafaela-saes-03c8d.jpeg'
-import { WHATSAPP_LINK } from '@/constants/contact'
+import { WHATSAPP_LINK, WHATSAPP_USUCAPIAO_LINK } from '@/constants/contact'
 
-const links = [
+const defaultLinks = [
   ['O que pode ser analisado', 'analise'],
+  ['Como funciona', 'como-funciona'],
+  ['Sobre a Dra. Rafaela', 'sobre'],
+  ['Dúvidas frequentes', 'faq'],
+]
+
+const usucapiaoLinks = [
+  ['Situações', 'situacoes'],
+  ['O que analisamos', 'analise'],
   ['Como funciona', 'como-funciona'],
   ['Sobre a Dra. Rafaela', 'sobre'],
   ['Dúvidas frequentes', 'faq'],
@@ -16,6 +24,14 @@ export default function Layout() {
   const [menu, setMenu] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
+
+  const isUsucapiao = location.pathname.startsWith('/usucapiao')
+  const isHome = location.pathname === '/'
+  const currentLinks = isUsucapiao ? usucapiaoLinks : defaultLinks
+  const currentWhatsAppLink = isUsucapiao ? WHATSAPP_USUCAPIAO_LINK : WHATSAPP_LINK
+  const currentCtaLabel = isUsucapiao
+    ? 'Enviar documentos para análise'
+    : 'Enviar contrato para análise'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80)
@@ -31,33 +47,45 @@ export default function Layout() {
 
   const go = (id: string) => {
     setMenu(false)
-    if (location.pathname !== '/') navigate(`/#${id}`)
-    else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    const targetPath = isUsucapiao ? '/usucapiao' : '/'
+    if (location.pathname !== targetPath) {
+      navigate(`${targetPath}#${id}`)
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   return (
     <div className="min-h-screen bg-cream text-ink">
       <header
-        className={`site-header ${scrolled || location.pathname !== '/' ? 'header-solid' : ''}`}
+        className={`site-header ${
+          scrolled || (location.pathname !== '/' && location.pathname !== '/usucapiao')
+            ? 'header-solid'
+            : ''
+        }`}
       >
         <div className="container-wide flex h-20 items-center justify-between">
-          <Link to="/" className="brand" aria-label="Saes Advocacia - início">
+          <Link
+            to={isUsucapiao ? '/usucapiao' : '/'}
+            className="brand"
+            aria-label="Saes Advocacia - início"
+          >
             <img src={logo} alt="Monograma SR" />
             <span>SAES ADVOCACIA</span>
           </Link>
           <nav className="hidden items-center gap-6 lg:flex" aria-label="Navegação principal">
-            {links.map(([label, id]) => (
+            {currentLinks.map(([label, id]) => (
               <button key={id} onClick={() => go(id)} className="nav-link">
                 {label}
               </button>
             ))}
             <a
-              href={WHATSAPP_LINK}
+              href={currentWhatsAppLink}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-outline py-3"
             >
-              Enviar contrato para análise
+              {currentCtaLabel}
             </a>
           </nav>
           <button onClick={() => setMenu(true)} className="p-2 lg:hidden" aria-label="Abrir menu">
@@ -76,7 +104,7 @@ export default function Layout() {
             <X size={30} />
           </button>
           <img src={logo} alt="Saes Advocacia" className="mb-10 h-24 w-24 object-contain" />
-          {links.map(([label, id], i) => (
+          {currentLinks.map(([label, id], i) => (
             <button
               key={id}
               onClick={() => go(id)}
@@ -87,13 +115,13 @@ export default function Layout() {
             </button>
           ))}
           <a
-            href={WHATSAPP_LINK}
+            href={currentWhatsAppLink}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setMenu(false)}
             className="btn-primary mt-5 inline-flex"
           >
-            <MessageCircle size={18} /> Enviar contrato para análise
+            <MessageCircle size={18} /> {currentCtaLabel}
           </a>
         </div>
       )}
@@ -107,22 +135,56 @@ export default function Layout() {
           <div>
             <img src={logo} alt="Saes Advocacia" className="h-28 w-28 rounded object-contain" />
             <p className="wordmark mt-4">SAES ADVOCACIA</p>
+            <p className="mt-2 text-xs uppercase tracking-widest text-gold">
+              Direito Imobiliário & Regularização
+            </p>
           </div>
           <div className="space-y-4 text-sm text-darkmuted">
-            <p className="text-base text-cream">
-              Rafaela Saes — Advogada. OAB/SP [preencher com o número da OAB]
-            </p>
+            <p className="text-base text-cream">Rafaela Saes — Advogada. OAB/SP 485.223</p>
             <p>Responsável pelo tratamento dos dados: Rafaela Saes — Saes Advocacia.</p>
-            <Link to="/privacidade" className="inline-block text-gold underline underline-offset-4">
-              Política de Privacidade
-            </Link>
+
+            {/* Navegação entre as áreas de atuação / landing pages */}
+            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-gold">
+                Áreas de Atuação do Escritório
+              </p>
+              <div className="mt-2 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                <Link
+                  to="/"
+                  className={`transition-colors hover:text-gold ${
+                    isHome ? 'font-medium text-cream' : 'text-darkmuted'
+                  }`}
+                >
+                  Cancelamento de multipropriedade
+                </Link>
+                <span className="text-white/20">•</span>
+                <Link
+                  to="/usucapiao"
+                  className={`transition-colors hover:text-gold ${
+                    isUsucapiao ? 'font-medium text-cream' : 'text-darkmuted'
+                  }`}
+                >
+                  Usucapião e regularização de imóveis
+                </Link>
+              </div>
+            </div>
+
+            <div>
+              <Link
+                to="/privacidade"
+                className="inline-block text-gold underline underline-offset-4"
+              >
+                Política de Privacidade
+              </Link>
+            </div>
             <p>
               A análise é individual e não há garantia de resultado. Honorários e etapas são
               explicados antes da contratação.
             </p>
-            <p>
-              Atendimento exclusivo para multipropriedade, cotas imobiliárias, unidades hoteleiras e
-              produtos de férias compartilhadas. Não atendemos conflitos de locação.
+            <p className="text-xs text-darkmuted/80">
+              {isUsucapiao
+                ? 'Atendimento direcionado a usucapião, regularização de imóveis e questões de propriedade. Não atendemos distrato de aluguel, rescisão de locação, despejo ou cobrança de aluguel.'
+                : 'Atendimento exclusivo para multipropriedade, cotas imobiliárias, unidades hoteleiras e produtos de férias compartilhadas. Não atendemos conflitos de locação.'}
             </p>
             <div className="border-t border-white/10 pt-5">
               © 2026 Saes Advocacia — Todos os direitos reservados
@@ -131,14 +193,14 @@ export default function Layout() {
         </div>
       </footer>
 
-      {scrolled && location.pathname === '/' && (
+      {scrolled && (isHome || isUsucapiao) && (
         <a
-          href={WHATSAPP_LINK}
+          href={currentWhatsAppLink}
           target="_blank"
           rel="noopener noreferrer"
           className="mobile-bar sm:hidden"
         >
-          <MessageCircle size={20} /> Enviar contrato para análise
+          <MessageCircle size={20} /> {currentCtaLabel}
         </a>
       )}
     </div>
