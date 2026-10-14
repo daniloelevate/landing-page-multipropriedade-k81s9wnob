@@ -1,0 +1,22 @@
+# Configuração de Fallback para Apache (.htaccess)
+# Útil para servidores cPanel / Apache / LiteSpeed (ex: Hostinger, HostGator, Locaweb)
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Não reescrever se o arquivo físico existir (CSS, JS, imagens, etc.)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  # Não reescrever se o diretório físico existir
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Fallback de SPA: envia todas as outras requisições para o index.html
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# Caso o site seja publicado em uma subpasta (ex: /landing/):
+# Altere RewriteBase para:
+# RewriteBase /landing/
+# E o RewriteRule final para:
+# RewriteRule ^ /landing/index.html [L]
