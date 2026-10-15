@@ -122,8 +122,10 @@ export default function Index() {
             <p className="eyebrow">CANCELAMENTO DE CONTRATOS DE MULTIPROPRIEDADE</p>
             <h1>Quer cancelar seu contrato de multipropriedade?</h1>
             <p className="hero-subtitle">
-              Analise seu contrato e entenda quais caminhos podem ser avaliados para negociar o
-              cancelamento, questionar cobranças e buscar uma solução extrajudicial ou judicial.
+              Entenda quais caminhos podem ajudar você a conquistar a segurança jurídica sobre o
+              imóvel onde construiu sua história, seja pela via extrajudicial ou judicial. Analise
+              seu caso com orientação especializada e descubra quais são as possibilidades para
+              transformar anos de moradia em um caminho para o reconhecimento da propriedade.
             </p>
             <a
               href={WHATSAPP_LINK}
