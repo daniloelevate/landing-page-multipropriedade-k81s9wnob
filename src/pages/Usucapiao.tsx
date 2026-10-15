@@ -121,8 +121,10 @@ export default function Usucapiao() {
             <p className="eyebrow">USUCAPIÃO E REGULARIZAÇÃO IMOBILIÁRIA</p>
             <h1>Quer regularizar a propriedade do seu imóvel?</h1>
             <p className="hero-subtitle">
-              Analise a sua situação e entenda quais caminhos podem ser avaliados para reconhecer a
-              propriedade do imóvel pela morada de anos, de forma extrajudicial ou judicial.
+              Entenda quais caminhos podem ajudar você a conquistar a segurança jurídica sobre o
+              imóvel onde construiu sua história, seja pela via extrajudicial ou judicial. Analise
+              seu caso com orientação especializada e descubra quais são as possibilidades para
+              transformar anos de moradia em um caminho para o reconhecimento da propriedade.
             </p>
             <a
               href={WHATSAPP_USUCAPIAO_LINK}
