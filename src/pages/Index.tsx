@@ -18,7 +18,7 @@ import {
   Clock,
   Lock,
 } from 'lucide-react'
-import heroPhoto from '@/assets/foto-rafaela-saes-1-d440f.jpeg'
+import heroPhoto from '@/assets/whatsapp-image-2026-10-14-at-15.03.38-92ce2.jpeg'
 import aboutPhoto from '@/assets/foto-rafaela-saes-2-9c8cf.jpeg'
 import { WHATSAPP_LINK } from '@/constants/contact'
 
