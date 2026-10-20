@@ -28,9 +28,10 @@ const App = () => {
         <Sonner />
         <Routes>
           <Route element={<Layout />}>
-            {/* Se o hostname começar com "usucapiao" (ex: usucapiao.saesadvogada.com.br),
+            {/* Se o hostname for especificamente de usucapião em produção (ex: usucapiao.saesadvogada.com.br),
                 a raiz "/" renderiza diretamente a página de Usucapião.
-                Caso contrário, "/" renderiza a página de Multipropriedade. */}
+                Em localhost, no preview da Skip (*.goskip.app / *.goskip.dev) e em multipropriedade.saesadvogada.com.br,
+                a raiz "/" SEMPRE renderiza a página de Multipropriedade (Index). */}
             <Route path="/" element={isUsucapiaoDomain ? <Usucapiao /> : <Index />} />
             <Route path="/usucapiao" element={<Usucapiao />} />
             <Route path="/privacidade" element={<Privacy />} />

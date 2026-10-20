@@ -115,6 +115,13 @@ const faqs = [
 export default function Usucapiao() {
   useEffect(() => {
     document.title = 'Saes Advocacia — Usucapião e Regularização Imobiliária'
+    const descEl = document.querySelector('meta[name="description"]')
+    if (descEl) {
+      descEl.setAttribute(
+        'content',
+        'Análise de posse e documentação imobiliária para regularização de imóveis e usucapião extrajudicial ou judicial. Atendimento online com a Dra. Rafaela Saes — OAB/SP 485.223.',
+      )
+    }
   }, [])
 
   return (

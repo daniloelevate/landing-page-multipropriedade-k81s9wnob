@@ -11,20 +11,52 @@
  * - Links cruzados utilizam rotas internas do React Router ("/" e "/usucapiao").
  */
 
+/**
+ * Detecta se o ambiente atual é preview da Skip (*.goskip.app, *.goskip.dev) ou ambiente local/dev.
+ * No Skip preview e localhost, o comportamento é sempre o padrão SPA:
+ * - "/" renderiza Multipropriedade (Index)
+ * - "/usucapiao" renderiza Usucapião
+ */
+export function isSkipOrDevHost(hostname?: string): boolean {
+  if (typeof window === 'undefined' && !hostname) return false
+  const host = (hostname || window.location.hostname).toLowerCase()
+  return (
+    host.includes('goskip.app') ||
+    host.includes('goskip.dev') ||
+    host.includes('localhost') ||
+    host === '127.0.0.1' ||
+    host.endsWith('.local')
+  )
+}
+
+/**
+ * Retorna true APENAS em produção para o subdomínio usucapiao (ex: usucapiao.saesadvogada.com.br).
+ * No preview da Skip e localhost, sempre retorna false.
+ */
 export function isUsucapiaoHost(): boolean {
   if (typeof window === 'undefined') return false
+  if (isSkipOrDevHost()) return false
   const host = window.location.hostname.toLowerCase()
   return host.startsWith('usucapiao.')
 }
 
+/**
+ * Retorna true APENAS em produção para o subdomínio multipropriedade (ex: multipropriedade.saesadvogada.com.br).
+ * No preview da Skip e localhost, sempre retorna false.
+ */
 export function isMultipropriedadeHost(): boolean {
   if (typeof window === 'undefined') return false
+  if (isSkipOrDevHost()) return false
   const host = window.location.hostname.toLowerCase()
   return host.startsWith('multipropriedade.')
 }
 
+/**
+ * Retorna true apenas para domínios próprios em produção (saesadvogada.com.br).
+ */
 export function isCustomDomain(): boolean {
   if (typeof window === 'undefined') return false
+  if (isSkipOrDevHost()) return false
   const host = window.location.hostname.toLowerCase()
   return host.includes('saesadvogada.com.br')
 }
@@ -43,12 +75,11 @@ export const USUCAPIAO_META = {
 
 /**
  * Atualiza dinamicamente o título do documento e as tags meta de descrição
- * com base no subdomínio/host acessado.
+ * conforme a página ativa (isUsucapiao: boolean).
  */
-export function syncDocumentMetaForHost(): void {
+export function syncDocumentMeta(isUsucapiao: boolean): void {
   if (typeof document === 'undefined') return
 
-  const isUsucapiao = isUsucapiaoHost()
   const meta = isUsucapiao ? USUCAPIAO_META : MULTIPROPRIEDADE_META
 
   document.title = meta.title
@@ -69,6 +100,14 @@ export function syncDocumentMetaForHost(): void {
   if (ogDescEl) {
     ogDescEl.setAttribute('content', meta.description)
   }
+}
+
+/**
+ * Atualiza dinamicamente o título do documento e as tags meta de descrição
+ * com base no subdomínio/host acessado na inicialização.
+ */
+export function syncDocumentMetaForHost(): void {
+  syncDocumentMeta(isUsucapiaoHost())
 }
 
 export interface NavDestination {

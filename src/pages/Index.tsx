@@ -117,6 +117,13 @@ const faqs = [
 export default function Index() {
   useEffect(() => {
     document.title = 'Saes Advocacia — Cancelamento de Contratos de Multipropriedade'
+    const descEl = document.querySelector('meta[name="description"]')
+    if (descEl) {
+      descEl.setAttribute(
+        'content',
+        'Análise de contrato de multipropriedade para avaliar cancelamento, negociação de distrato e questionamento de cobranças, nas vias extrajudicial e judicial. Atendimento online com a Dra. Rafaela Saes — OAB/SP 485.223.',
+      )
+    }
   }, [])
 
   return (
