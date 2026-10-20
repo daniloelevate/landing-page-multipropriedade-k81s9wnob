@@ -19,24 +19,62 @@
  */
 export function isSkipOrDevHost(hostname?: string): boolean {
   if (typeof window === 'undefined' && !hostname) return false
-  const host = (hostname || window.location.hostname).toLowerCase()
-  return (
-    host.includes('goskip.app') ||
-    host.includes('goskip.dev') ||
+  const host = (
+    hostname || (typeof window !== 'undefined' ? window.location.hostname : '')
+  ).toLowerCase()
+
+  // 1. Qualquer host do ecossistema Skip (goskip.app, goskip.dev, skip.it, goskip.cloud, etc.)
+  if (host.includes('skip') || host.includes('goskip')) {
+    return true
+  }
+
+  // 2. Ambientes de desenvolvimento local e preview
+  if (
     host.includes('localhost') ||
     host === '127.0.0.1' ||
-    host.endsWith('.local')
-  )
+    host.endsWith('.local') ||
+    host.includes('preview') ||
+    host.includes('internal') ||
+    host.includes('webcontainer') ||
+    host.includes('stackblitz') ||
+    host.includes('lovable') ||
+    host.includes('railway') ||
+    host === ''
+  ) {
+    return true
+  }
+
+  // 3. Iframe de visualização (o preview da plataforma roda em iframe)
+  // Se estiver dentro de um iframe e não for estritamente o domínio próprio configurado
+  if (typeof window !== 'undefined' && window.self !== window.top) {
+    if (!host.endsWith('saesadvogada.com.br')) {
+      return true
+    }
+  }
+
+  return false
 }
 
 /**
  * Retorna true APENAS em produção para o subdomínio usucapiao (ex: usucapiao.saesadvogada.com.br).
- * No preview da Skip e localhost, sempre retorna false.
+ * No preview da Skip, localhost e em multipropriedade/saesadvogada.com.br, SEMPRE retorna false.
  */
 export function isUsucapiaoHost(): boolean {
   if (typeof window === 'undefined') return false
   if (isSkipOrDevHost()) return false
+
   const host = window.location.hostname.toLowerCase()
+
+  // Em nenhum cenário a raiz de multipropriedade ou do domínio raiz deve ser Usucapião
+  if (
+    host === 'saesadvogada.com.br' ||
+    host === 'www.saesadvogada.com.br' ||
+    host.startsWith('multipropriedade.')
+  ) {
+    return false
+  }
+
+  // Apenas a raiz do host usucapiao.* em produção
   return host.startsWith('usucapiao.')
 }
 
