@@ -1,4 +1,5 @@
 /* Main App Component - Handles routing (using react-router-dom), query client and other providers - use this file to add all routes */
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Toaster } from '@/components/ui/toaster'
 import { Toaster as Sonner } from '@/components/ui/sonner'
@@ -8,13 +9,17 @@ import Usucapiao from './pages/Usucapiao'
 import NotFound from './pages/NotFound'
 import Privacy from './pages/Privacy'
 import Layout from './components/Layout'
-import { isUsucapiaoHost } from './lib/domain'
+import { isUsucapiaoHost, syncDocumentMetaForHost } from './lib/domain'
 
 // ONLY IMPORT AND RENDER WORKING PAGES, NEVER ADD PLACEHOLDER COMPONENTS OR PAGES IN THIS FILE
 // AVOID REMOVING ANY CONTEXT PROVIDERS FROM THIS FILE (e.g. TooltipProvider, Toaster, Sonner)
 
 const App = () => {
   const isUsucapiaoDomain = isUsucapiaoHost()
+
+  useEffect(() => {
+    syncDocumentMetaForHost()
+  }, [])
 
   return (
     <BrowserRouter>

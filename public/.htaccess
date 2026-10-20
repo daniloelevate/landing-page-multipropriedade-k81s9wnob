@@ -1,12 +1,85 @@
+# ==============================================================================
+# Configuração Apache (.htaccess) para SPA React + Vite em Hospedagem cPanel
+# Saes Advocacia (multipropriedade.saesadvogada.com.br / usucapiao.saesadvogada.com.br)
+# ==============================================================================
+
+# ----------------------------------------------------------------------
+# 1. Desativar MultiViews e Listagem de Diretórios
+# ----------------------------------------------------------------------
+# MultiViews no Apache/cPanel tenta "adivinhar" extensões de arquivos e
+# frequentemente intercepta requisições de módulos JS ou rotas SPA,
+# quebrando a entrega de assets e causando tela branca.
+Options -MultiViews -Indexes
+
+# ----------------------------------------------------------------------
+# 2. Tipos MIME Corretos para JavaScript Moderno (Módulos ES)
+# ----------------------------------------------------------------------
+# Garante que scripts .js e .mjs sejam entregues com Content-Type
+# application/javascript para que o navegador não bloqueie o parse do módulo.
+<IfModule mod_mime.c>
+  AddType application/javascript .js .mjs
+  AddType text/css .css
+  AddType image/svg+xml .svg
+  AddType image/webp .webp
+  AddType image/jpeg .jpg .jpeg
+  AddType image/png .png
+  AddType font/woff .woff
+  AddType font/woff2 .woff2
+</IfModule>
+
+# ----------------------------------------------------------------------
+# 3. Políticas de Cache HTTP
+# ----------------------------------------------------------------------
+# - Arquivos em assets/ possuem hash único no nome: cache longo (1 ano) e imutável.
+# - index.html NUNCA deve ficar em cache longo: o navegador precisa buscar
+#   sempre a versão mais nova para carregar os hashes atualizados de JS/CSS.
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # index.html sem cache para sempre refletir novos deploys
+  ExpiresByType text/html "access plus 0 seconds"
+
+  # Assets com hash gerados pelo Vite (cache de 1 ano)
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Força revalidação imediata do HTML principal
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+
+  # Cache imutável para assets estáticos com hash
+  <FilesMatch "\.(js|mjs|css|webp|png|jpg|jpeg|svg|woff2|woff)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+# ----------------------------------------------------------------------
+# 4. Roteamento SPA (Single Page Application Fallback)
+# ----------------------------------------------------------------------
+# Regra de ouro:
+# - Se a URL apontar para um arquivo físico REAL (-f), serve diretamente (assets/*.js, imagens, css).
+# - Se a URL apontar para um diretório físico REAL (-d), serve diretamente.
+# - Se o caminho NÃO existir fisicamente, reescreve para index.html para o React Router assumir.
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
 
-  # Se o arquivo ou diretório físico existir, serve direto
+  # 4.1. Não reescrever se o arquivo físico existir (assets, js, css, imagens, favicon)
   RewriteCond %{REQUEST_FILENAME} -f [OR]
+  # 4.2. Não reescrever se o diretório físico existir
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
-  # Caso contrário, redireciona qualquer rota para o index.html da SPA
+  # 4.3. Fallback de SPA: apenas rotas que NÃO existem no disco vão para index.html
   RewriteRule ^ index.html [L]
 </IfModule>
