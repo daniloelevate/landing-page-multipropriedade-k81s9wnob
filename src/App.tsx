@@ -19,6 +19,40 @@ const App = () => {
 
   useEffect(() => {
     syncDocumentMetaForHost()
+
+    // Observer para remover qualquer elemento ou selo "Criado com Skip" que possa ser injetado dinamicamente
+    const removeSkipBadge = () => {
+      const candidates = document.querySelectorAll<HTMLElement>(
+        '[data-skip-badge], [data-skip-watermark], [class*="skip-badge"], [id*="skip-badge"], a[href*="goskip"], a[href*="skip.it"]',
+      )
+      candidates.forEach((el) => {
+        el.style.setProperty('display', 'none', 'important')
+        el.style.setProperty('opacity', '0', 'important')
+        el.style.setProperty('visibility', 'hidden', 'important')
+      })
+
+      // Procura elementos com texto "Criado com Skip" ou "Made with Skip"
+      const allElements = document.querySelectorAll<HTMLElement>('body *')
+      allElements.forEach((el) => {
+        if (el.children.length === 0 && el.textContent) {
+          const text = el.textContent.trim().toLowerCase()
+          if (
+            (text.includes('criado com skip') || text.includes('made with skip')) &&
+            !el.closest('main') &&
+            !el.closest('p')
+          ) {
+            const container = el.closest('a') || el.closest('div') || el
+            container.style.setProperty('display', 'none', 'important')
+          }
+        }
+      })
+    }
+
+    removeSkipBadge()
+    const observer = new MutationObserver(removeSkipBadge)
+    observer.observe(document.body, { childList: true, subtree: true })
+
+    return () => observer.disconnect()
   }, [])
 
   return (

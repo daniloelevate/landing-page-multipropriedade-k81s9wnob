@@ -335,6 +335,20 @@
   .mobile-bar {
     @apply fixed inset-x-3 bottom-3 z-40 flex h-14 items-center justify-center gap-2 rounded-md bg-[#B08D45] px-4 text-sm font-semibold uppercase tracking-wide text-[#111008] shadow-2xl;
   }
+  /* Ocultar selos/watermarks injetados externamente no preview ("Criado com Skip" / "Made with Skip") */
+  [data-skip-badge],
+  [data-skip-watermark],
+  [class*='skip-badge'],
+  [id*='skip-badge'],
+  [class*='goskip-badge'],
+  [aria-label*='Skip'],
+  a[href*='goskip.dev'][target='_blank'],
+  a[href*='skip.it'][target='_blank'] {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+  }
   .prose-law {
     @apply space-y-6 leading-relaxed text-[#3b362d];
     color: #3b362d;

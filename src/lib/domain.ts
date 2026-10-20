@@ -23,12 +23,27 @@ export function isSkipOrDevHost(hostname?: string): boolean {
     hostname || (typeof window !== 'undefined' ? window.location.hostname : '')
   ).toLowerCase()
 
-  // 1. Qualquer host do ecossistema Skip (goskip.app, goskip.dev, skip.it, goskip.cloud, etc.)
+  // 1. Se estiver rodando dentro de um iframe e NÃO for explicitamente o domínio próprio final:
+  // O preview do Skip, testes e containers renderizam a aplicação dentro de um iframe.
+  if (typeof window !== 'undefined') {
+    try {
+      if (window.self !== window.top) {
+        if (!host.endsWith('saesadvogada.com.br')) {
+          return true
+        }
+      }
+    } catch {
+      // Se der Cross-Origin ao acessar window.top, estamos certamente em iframe de terceiro/preview
+      return true
+    }
+  }
+
+  // 2. Qualquer host do ecossistema Skip (goskip.app, goskip.dev, skip.it, goskip.cloud, etc.)
   if (host.includes('skip') || host.includes('goskip')) {
     return true
   }
 
-  // 2. Ambientes de desenvolvimento local e preview
+  // 3. Ambientes de desenvolvimento local, preview, sandbox e containers
   if (
     host.includes('localhost') ||
     host === '127.0.0.1' ||
@@ -39,17 +54,16 @@ export function isSkipOrDevHost(hostname?: string): boolean {
     host.includes('stackblitz') ||
     host.includes('lovable') ||
     host.includes('railway') ||
+    host.includes('ngrok') ||
+    host.includes('trycloudflare') ||
     host === ''
   ) {
     return true
   }
 
-  // 3. Iframe de visualização (o preview da plataforma roda em iframe)
-  // Se estiver dentro de um iframe e não for estritamente o domínio próprio configurado
-  if (typeof window !== 'undefined' && window.self !== window.top) {
-    if (!host.endsWith('saesadvogada.com.br')) {
-      return true
-    }
+  // 4. Se o hostname não pertencer explicitamente a saesadvogada.com.br, tratamos como ambiente de teste/preview
+  if (!host.endsWith('saesadvogada.com.br')) {
+    return true
   }
 
   return false
@@ -61,6 +75,8 @@ export function isSkipOrDevHost(hostname?: string): boolean {
  */
 export function isUsucapiaoHost(): boolean {
   if (typeof window === 'undefined') return false
+
+  // Se for preview, desenvolvimento local ou iframe de testes, NUNCA é host de Usucapião
   if (isSkipOrDevHost()) return false
 
   const host = window.location.hostname.toLowerCase()
@@ -74,8 +90,8 @@ export function isUsucapiaoHost(): boolean {
     return false
   }
 
-  // Apenas a raiz do host usucapiao.* em produção
-  return host.startsWith('usucapiao.')
+  // APENAS o subdomínio usucapiao de produção no domínio próprio
+  return host === 'usucapiao.saesadvogada.com.br' || host.startsWith('usucapiao.')
 }
 
 /**

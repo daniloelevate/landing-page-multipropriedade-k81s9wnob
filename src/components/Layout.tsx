@@ -4,6 +4,7 @@ import { Menu, MessageCircle, X } from 'lucide-react'
 import logo from '@/assets/logotipo-rafaela-saes-03c8d.jpeg'
 import { getMultipropriedadeNav, getUsucapiaoNav, isUsucapiaoHost } from '@/lib/domain'
 import { WHATSAPP_LINK, WHATSAPP_USUCAPIAO_LINK } from '@/constants/contact'
+import WhatsAppFloatingButton from '@/components/WhatsAppFloatingButton'
 
 const defaultLinks = [
   ['O que pode ser analisado', 'analise'],
@@ -223,15 +224,9 @@ export default function Layout() {
         </div>
       </footer>
 
-      {scrolled && (isHome || isUsucapiao) && (
-        <a
-          href={currentWhatsAppLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mobile-bar sm:hidden"
-        >
-          <MessageCircle size={20} /> {currentCtaLabel}
-        </a>
+      {/* Botão flutuante único de WhatsApp com balão "Precisa de ajuda?" e logotipo SVG inline */}
+      {(isHome || isUsucapiao) && (
+        <WhatsAppFloatingButton href={currentWhatsAppLink} label="Precisa de ajuda?" />
       )}
     </div>
   )
