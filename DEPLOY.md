@@ -1,147 +1,129 @@
-# Guia de Deploy e Publicação Estática (Backup / Redundância)
+# Guia de Deploy e Publicação Estática — Saes Advocacia
 
-Este projeto é uma Single Page Application (SPA) desenvolvida em **React 19 + TypeScript + Vite + Tailwind CSS**, concebida para funcionar de forma **100% estática e portável**, sem dependência de banco de dados ou backend no momento da navegação. Todas as conversões e contatos de clientes ocorrem de forma direta via WhatsApp.
+Este projeto é uma Single Page Application (SPA) desenvolvida em **React 19 + TypeScript + Vite + Tailwind CSS**, concebida para funcionar de forma **100% estática e portável**, sem dependência de banco de dados ou backend no momento da navegação. Todas as conversões e contatos de clientes ocorrem de forma direta via WhatsApp com a Dra. Rafaela Saes (OAB/SP 485.223).
 
 ---
 
-## 1. Estrutura de Rotas do Projeto
+## ⚠️ AVISO CRÍTICO: Não abrir o `dist/index.html` com duplo clique (`file://`)
 
-O site possui 3 rotas principais gerenciadas pelo React Router:
+> **Por que a tela fica branca se você der duplo clique no `dist/index.html`?**  
+> Aplicações modernas (como React + Vite) utilizam módulos JavaScript ES (`<script type="module">`).  
+> Por motivos estritos de segurança (CORS e política de mesma origem), **todos os navegadores modernos bloqueiam o carregamento de módulos JavaScript sob o protocolo `file://`**.  
+> Resultado: o HTML carrega, mas os scripts são bloqueados pelo navegador antes de executar, provocando **tela branca**.
+>
+> **Como testar corretamente no computador antes do deploy:**  
+> Sempre sirva a aplicação via HTTP local, rodando:
+>
+> ```bash
+> npm run preview
+> ```
+>
+> ou usando qualquer servidor HTTP local (ex: `npx serve dist` ou a extensão Live Server do VS Code). Nunca teste por duplo clique no arquivo local.
 
-- `/` — Landing Page de **Cancelamento de Contratos de Multipropriedade**
-- `/usucapiao` — Landing Page de **Usucapião e Regularização Imobiliária**
-- `/privacidade` — **Política de Privacidade e Proteção de Dados (LGPD)**
+---
 
-### Subdomínios Sugeridos
+## 1. Estrutura de Rotas e Roteamento por Subdomínio
 
-O projeto está preparado para atender tanto domínios separados/subdomínios quanto um domínio unificado:
+O site possui 3 páginas principais gerenciadas pelo React Router:
 
-1. **`multipropriedade.saesadvogada.com.br`**: aponta para a raiz (`/`).
+- **Multipropriedade**: Landing Page de **Cancelamento de Contratos de Multipropriedade**
+- **Usucapião**: Landing Page de **Usucapião e Regularização Imobiliária**
+- **Privacidade**: **Política de Privacidade e Proteção de Dados (LGPD)**
+
+### Um Único Build Serve Ambos os Subdomínios!
+
+Você **NÃO precisa de dois builds diferentes**. O mesmo build gerado por `npm run build:static` atende os dois subdomínios graças à **detecção automática por hostname**:
+
+1. **`multipropriedade.saesadvogada.com.br`** (ou acesso padrão/localhost):
+   - A raiz (`/`) renderiza a página de **Multipropriedade**.
+   - O link de usucapião no rodapé/menu direciona para `https://usucapiao.saesadvogada.com.br/`.
 2. **`usucapiao.saesadvogada.com.br`**:
-   - Se apontado para o mesmo build, a rota `/usucapiao` pode ser acessada diretamente graças aos rewrites/redirecionamentos configurados.
-   - O rodapé e cabeçalho já contam com links de alternância entre as duas áreas de atuação, permitindo que a usuária navegue fluidamente entre `/` e `/usucapiao` no mesmo domínio ou subdomínio.
+   - A raiz (`/`) detecta o subdomínio e renderiza automaticamente a página de **Usucapião**.
+   - O link de multipropriedade no rodapé/menu direciona para `https://multipropriedade.saesadvogada.com.br/`.
+3. **Ambiente de Testes / Skip (`*.goskip.app`, `localhost`)**:
+   - Permanece no modo SPA padrão: `/` exibe Multipropriedade, `/usucapiao` exibe Usucapião e `/privacidade` exibe a política de privacidade.
 
 ---
 
-## 2. Como Gerar o Build Estático
+## 2. Passo a Passo do Build Estático
 
-Para gerar os arquivos estáticos de produção, execute no seu terminal:
+No terminal, dentro da pasta do projeto:
 
 ```bash
-# Instalar dependências (caso seja a primeira vez)
+# 1. Instalar dependências (caso seja a primeira vez)
 npm install
 
-# Gerar o build de produção padrão
-npm run build
-
-# OU gerar o build estático com caminhos relativos (base: ./)
+# 2. Gerar o build estático para hospedagem cPanel / Apache
 npm run build:static
 ```
 
-> **Dica sobre caminhos relativos (`npm run build:static`):**  
-> O comando `npm run build:static` executa `vite build --base=./`. Isso gera referências relativas para os assets (scripts, CSS e imagens), permitindo que a aplicação seja hospedada na raiz de um domínio (`https://exemplo.com/`) ou em qualquer subpasta (ex: `https://exemplo.com/landing/`) sem quebrar os arquivos.
+O comando `npm run build:static` executa `vite build --base=./`. Isso gera referências relativas para os arquivos empacotados em `dist/`.
+
+Para testar localmente antes de enviar para a hospedagem:
+
+```bash
+npm run preview
+```
+
+Abra o link exibido (ex: `http://localhost:4173/`) no navegador.
 
 ---
 
 ## 3. O que há na pasta `dist`?
 
-Após a execução do build, a pasta `dist` é criada na raiz do projeto com o seguinte conteúdo:
+Após o build, a pasta `dist` conteria:
 
-- `index.html`: Arquivo principal da aplicação.
-- `assets/`: Arquivos JavaScript empacotados, folhas de estilo CSS minificadas e imagens otimizadas.
-- `_redirects`: Arquivo de rewrite para compatibilidade automática com **Netlify** e **Cloudflare Pages** (`/* /index.html 200`).
-- `.htaccess`: Arquivo de fallback para servidores **Apache / LiteSpeed / cPanel** (ex: Hostinger).
-- `favicon.ico`, `og-image.png`: Favicons e imagem de prévia para redes sociais.
-
-Todo o conteúdo de `dist` é estático e pode ser servido por qualquer servidor web HTTP.
-
----
-
-## 4. Como Publicar em Hospedagens Externas
-
-### Opção A: Vercel
-
-A Vercel reconhece projetos Vite automaticamente e já possui o arquivo `vercel.json` configurado na raiz deste repositório para rewrite de rotas SPA.
-
-1. Acesse [vercel.com](https://vercel.com/) e faça login.
-2. Clique em **Add New...** -> **Project**.
-3. Conecte seu repositório Git (GitHub ou GitLab).
-4. As configurações padrão detectadas pelo Vercel serão:
-   - **Framework Preset:** `Vite`
-   - **Build Command:** `npm run build`
-   - **Output Directory:** `dist`
-5. Clique em **Deploy**.
-6. Para configurar seu domínio ou subdomínio:
-   - Vá em **Project Settings** -> **Domains**.
-   - Adicione `multipropriedade.saesadvogada.com.br` ou `usucapiao.saesadvogada.com.br` e configure os registros CNAME no seu DNS.
+- `index.html`: Arquivo principal com título, meta tags SEO e favicon da Saes Advocacia.
+- `assets/`: Arquivos JavaScript empacotados, CSS minificado e imagens otimizadas.
+- `.htaccess`: Arquivo de regras Apache para direcionamento correto de rotas SPA no cPanel.
+- `_redirects`: Arquivo de fallback para Netlify / Cloudflare Pages.
+- `logotipo-rafaela-saes.jpeg`: Ícone do escritório usado como favicon.
+- `favicon.ico`, `og-image.png`: Metadados e prévia para redes sociais.
 
 ---
 
-### Opção B: Netlify ou Cloudflare Pages
+## 4. Publicação na Turbo Cloud / cPanel (Passo a Passo)
 
-O arquivo `public/_redirects` é copiado automaticamente para a pasta `dist/_redirects` durante o build, garantindo que qualquer rota (`/usucapiao`, `/privacidade`) recarregue sem erro 404.
+### Passo 1: Criar/Verificar os Subdomínios no cPanel
 
-#### Via Arrastar e Soltar (Drag & Drop):
+1. Acesse o cPanel da Turbo Cloud.
+2. Na seção **Domínios** (Domains) -> **Subdomínios** (Subdomains), certifique-se de que os dois subdomínios estão criados:
+   - `multipropriedade.saesadvogada.com.br` (pasta raiz geralmente `public_html/multipropriedade` ou `multipropriedade.saesadvogada.com.br`)
+   - `usucapiao.saesadvogada.com.br` (pasta raiz geralmente `public_html/usucapiao` ou `usucapiao.saesadvogada.com.br`)
 
-1. **Netlify:**
-   - Faça login no [netlify.com](https://app.netlify.com/).
-   - Acesse a aba **Sites**.
-   - Arraste a pasta `dist` gerada no seu computador para a área de upload ("Drag and drop your site output folder here").
-   - O deploy é imediato.
-2. **Cloudflare Pages:**
-   - Acesse o painel da [Cloudflare](https://dash.cloudflare.com/) -> **Workers & Pages** -> **Create application** -> **Pages** -> **Upload assets**.
-   - Dê um nome ao projeto (ex: `saes-advocacia-multipropriedade`).
-   - Arraste a pasta `dist` e clique em **Deploy site**.
+### Passo 2: Upload do Conteúdo da Pasta `dist`
 
-#### Via Conexão com Repositório Git:
+1. Abra o **Gerenciador de Arquivos** (File Manager) do cPanel (ou conecte via FTP/SFTP com FileZilla).
+2. Entre na pasta raiz do subdomínio `multipropriedade` (ex: `public_html/multipropriedade/`).
+3. **Envie todo o CONTEÚDO de dentro da pasta `dist`** (não envie a pasta `dist` como pasta, mas sim os arquivos que estão dentro dela: `index.html`, pasta `assets`, `.htaccess`, etc.).
+4. Repita o mesmo envio para a pasta raiz do subdomínio `usucapiao` (ex: `public_html/usucapiao/`).
+   - _Dica:_ Como o build é o mesmo para ambos, você pode compactar os arquivos de `dist` em um arquivo `.zip`, fazer o upload para cada pasta e extrair diretamente pelo Gerenciador de Arquivos do cPanel.
 
-- **Build command:** `npm run build` (ou `npm run build:static`)
-- **Build output directory:** `dist`
+### Passo 3: Certificado SSL (HTTPS via Let's Encrypt)
 
----
+1. No cPanel, procure por **SSL/TLS Status** ou **Let's Encrypt SSL**.
+2. Localize os subdomínios `multipropriedade.saesadvogada.com.br` e `usucapiao.saesadvogada.com.br`.
+3. Clique em **Run AutoSSL** ou **Issue** para emitir o certificado gratuito Let's Encrypt.
+4. Aguarde a confirmação de que ambos os subdomínios estão com o cadeado verde ativo.
 
-### Opção C: Hospedagem cPanel / Hospedagem Compartilhada (Hostinger, HostGator, Locaweb)
+### Passo 4: Verificação Final
 
-O site WordPress principal da Dra. Rafaela reside em uma hospedagem compartilhada (como Hostinger). Você pode hospedar as landing pages em um subdomínio (`multipropriedade.saesadvogada.com.br`) ou em uma subpasta (`saesadvogada.com.br/multipropriedade/`) facilmente:
-
-1. No seu computador, gere o build:
-   ```bash
-   npm run build:static
-   ```
-2. Acesse o **Gerenciador de Arquivos** (File Manager) do cPanel ou conecte-se via **FTP/SFTP**.
-3. Navegue até a pasta de destino correspondente:
-   - Para um subdomínio (ex: `multipropriedade.saesadvogada.com.br`): a pasta raiz geralmente é `public_html/multipropriedade` ou um diretório com o nome do subdomínio.
-   - Para uma subpasta: crie uma pasta dentro de `public_html` (ex: `public_html/multipropriedade`).
-4. **Envie todo o CONTEÚDO da pasta `dist`** (não a pasta `dist` em si, mas os arquivos dentro dela: `index.html`, pasta `assets/`, `.htaccess`, etc.).
-5. Certifique-se de que os arquivos ocultos (que começam com ponto, como `.htaccess`) estejam visíveis e tenham sido enviados. O arquivo `.htaccess` garante que, quando o visitante acessar ou recarregar diretamente `https://multipropriedade.saesadvogada.com.br/usucapiao`, o Apache entregue o `index.html` e a rota funcione sem erro 404.
-6. Um modelo documentado do arquivo `.htaccess` também está disponível na pasta `docs/deploy/htaccess-example.txt`.
+1. Abra `https://multipropriedade.saesadvogada.com.br/` no navegador:
+   - Deve abrir a página de **Cancelamento de Multipropriedade**.
+   - Título na aba: _Saes Advocacia — Cancelamento de Contratos de Multipropriedade_.
+2. Abra `https://usucapiao.saesadvogada.com.br/` no navegador:
+   - Deve abrir diretamente a página de **Usucapião e Regularização Imobiliária**.
+   - Título na aba: _Saes Advocacia — Usucapião e Regularização Imobiliária_.
+3. Teste os links no rodapé e menu de cada página — eles alternam corretamente entre os dois subdomínios sem quebrar.
+4. Teste recarregar (F5) em qualquer página para certificar-se de que o `.htaccess` evita erro 404.
 
 ---
 
-### Opção D: Servidor Próprio com Nginx (VPS / Cloud)
+## 5. Resumo do Diagnóstico de Problemas Comuns
 
-Se preferir utilizar um servidor VPS próprio com Nginx:
-
-1. Um modelo completo de configuração está disponível em `docs/deploy/nginx-example.conf`.
-2. A diretiva essencial para SPA é:
-   ```nginx
-   location / {
-       try_files $uri $uri/ /index.html;
-   }
-   ```
-
----
-
-## 5. Testando Localmente o Build Estático
-
-Você pode testar exatamente o comportamento do build de produção estático antes de subir para qualquer servidor:
-
-```bash
-# 1. Gerar o build estático
-npm run build:static
-
-# 2. Iniciar o servidor de preview local
-npm run preview
-```
-
-O Vite iniciará um servidor estático local (geralmente em `http://localhost:4173/`). Acesse `/usucapiao` e recarregue a página (F5) para verificar que o roteamento SPA e todos os assets funcionam perfeitamente.
+| Sintoma                                              | Causa mais provável                                                                                                                                  | Solução                                                                                                                                                                             |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Tela branca ao dar duplo clique no `index.html`**  | Tentativa de abrir localmente via `file://`. Navegadores bloqueiam módulos ES locais por segurança.                                                  | Use `npm run preview` ou abra via servidor HTTP/hospedagem cPanel.                                                                                                                  |
+| **Tela branca no cPanel**                            | Upload incorreto (ex: subiu a pasta `dist/` inteira em vez do seu conteúdo, gerando `subdominio/dist/index.html`) ou arquivos de `assets/` faltando. | Verifique se `index.html` e a pasta `assets` estão diretamente na raiz da pasta do subdomínio.                                                                                      |
+| **Erro 404 ao recarregar a página (F5)**             | O arquivo `.htaccess` não foi enviado ou os arquivos ocultos não foram copiados.                                                                     | Certifique-se de que o arquivo `.htaccess` está presente na pasta do subdomínio no cPanel.                                                                                          |
+| **Subdomínio de usucapião abrindo multipropriedade** | Hostname não identificado ou build antigo.                                                                                                           | O código atual já possui detecção automática: qualquer hostname iniciando com `usucapiao.` abre a página de usucapião na raiz. Basta gerar `npm run build:static` e fazer o upload. |

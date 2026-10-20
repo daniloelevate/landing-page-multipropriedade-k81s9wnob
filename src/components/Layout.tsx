@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, MessageCircle, X } from 'lucide-react'
 import logo from '@/assets/logotipo-rafaela-saes-03c8d.jpeg'
+import { getMultipropriedadeNav, getUsucapiaoNav, isUsucapiaoHost } from '@/lib/domain'
 import { WHATSAPP_LINK, WHATSAPP_USUCAPIAO_LINK } from '@/constants/contact'
 
 const defaultLinks = [
@@ -25,8 +26,11 @@ export default function Layout() {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const isUsucapiao = location.pathname.startsWith('/usucapiao')
-  const isHome = location.pathname === '/'
+  const isUsucapiaoHostDomain = isUsucapiaoHost()
+  const isUsucapiao =
+    location.pathname.startsWith('/usucapiao') ||
+    (isUsucapiaoHostDomain && location.pathname === '/')
+  const isHome = location.pathname === '/' && !isUsucapiaoHostDomain
   const currentLinks = isUsucapiao ? usucapiaoLinks : defaultLinks
   const currentWhatsAppLink = isUsucapiao ? WHATSAPP_USUCAPIAO_LINK : WHATSAPP_LINK
   const currentCtaLabel = isUsucapiao
@@ -45,9 +49,13 @@ export default function Layout() {
     window.scrollTo(0, 0)
   }, [location.pathname])
 
+  const multiNav = getMultipropriedadeNav()
+  const usucapiaoNav = getUsucapiaoNav()
+
   const go = (id: string) => {
     setMenu(false)
-    const targetPath = isUsucapiao ? '/usucapiao' : '/'
+    // Se estiver no host usucapiao e na rota "/", a página atual já é usucapião
+    const targetPath = isUsucapiaoHostDomain ? '/' : isUsucapiao ? '/usucapiao' : '/'
     if (location.pathname !== targetPath) {
       navigate(`${targetPath}#${id}`)
     } else {
@@ -66,7 +74,7 @@ export default function Layout() {
       >
         <div className="container-wide flex h-20 items-center justify-between">
           <Link
-            to={isUsucapiao ? '/usucapiao' : '/'}
+            to={isUsucapiaoHostDomain ? '/' : isUsucapiao ? '/usucapiao' : '/'}
             className="brand"
             aria-label="Saes Advocacia - início"
           >
@@ -149,23 +157,45 @@ export default function Layout() {
                 Áreas de Atuação do Escritório
               </p>
               <div className="mt-2 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-                <Link
-                  to="/"
-                  className={`transition-colors hover:text-gold ${
-                    isHome ? 'font-medium text-cream' : 'text-darkmuted'
-                  }`}
-                >
-                  Cancelamento de multipropriedade
-                </Link>
+                {multiNav.isExternal ? (
+                  <a
+                    href={multiNav.href}
+                    className={`transition-colors hover:text-gold ${
+                      isHome ? 'font-medium text-cream' : 'text-darkmuted'
+                    }`}
+                  >
+                    Cancelamento de multipropriedade
+                  </a>
+                ) : (
+                  <Link
+                    to={multiNav.href}
+                    className={`transition-colors hover:text-gold ${
+                      isHome ? 'font-medium text-cream' : 'text-darkmuted'
+                    }`}
+                  >
+                    Cancelamento de multipropriedade
+                  </Link>
+                )}
                 <span className="text-white/20">•</span>
-                <Link
-                  to="/usucapiao"
-                  className={`transition-colors hover:text-gold ${
-                    isUsucapiao ? 'font-medium text-cream' : 'text-darkmuted'
-                  }`}
-                >
-                  Usucapião e regularização de imóveis
-                </Link>
+                {usucapiaoNav.isExternal ? (
+                  <a
+                    href={usucapiaoNav.href}
+                    className={`transition-colors hover:text-gold ${
+                      isUsucapiao ? 'font-medium text-cream' : 'text-darkmuted'
+                    }`}
+                  >
+                    Usucapião e regularização de imóveis
+                  </a>
+                ) : (
+                  <Link
+                    to={usucapiaoNav.href}
+                    className={`transition-colors hover:text-gold ${
+                      isUsucapiao ? 'font-medium text-cream' : 'text-darkmuted'
+                    }`}
+                  >
+                    Usucapião e regularização de imóveis
+                  </Link>
+                )}
               </div>
             </div>
 

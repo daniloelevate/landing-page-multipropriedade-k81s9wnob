@@ -1,12 +1,21 @@
+import { useEffect } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { isUsucapiaoHost } from '@/lib/domain'
 
 export default function Privacy() {
+  useEffect(() => {
+    document.title = 'Política de Privacidade — Saes Advocacia'
+  }, [])
+
+  const isUsucapiao = isUsucapiaoHost()
+  const backTarget = isUsucapiao ? '/' : '/'
+
   return (
     <div className="page-simple">
       <div className="mx-auto max-w-3xl px-6 py-32">
         <Link
-          to="/"
+          to={backTarget}
           className="mb-10 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gold"
         >
           <ArrowLeft size={17} /> Voltar ao início

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   Accordion,
   AccordionContent,
@@ -112,6 +113,10 @@ const faqs = [
 ]
 
 export default function Usucapiao() {
+  useEffect(() => {
+    document.title = 'Saes Advocacia — Usucapião e Regularização Imobiliária'
+  }, [])
+
   return (
     <>
       {/* 1. Hero principal */}

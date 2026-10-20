@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   Accordion,
   AccordionContent,
@@ -114,6 +115,10 @@ const faqs = [
 ]
 
 export default function Index() {
+  useEffect(() => {
+    document.title = 'Saes Advocacia — Cancelamento de Contratos de Multipropriedade'
+  }, [])
+
   return (
     <>
       <section className="hero">
